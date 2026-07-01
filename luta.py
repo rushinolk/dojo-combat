@@ -49,7 +49,7 @@ if __name__ == "__main__":
         print(f"Vida: {player.get("vida")}")
 
         print("------------------------------")
-        print(f"{npc['atk']} NPC Boladão")
+        print(f"{npc.get("nome")} NPC Boladão")
         print(f"Vida: {npc.get("vida")}")
 
 
