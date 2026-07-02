@@ -41,10 +41,7 @@ while end_game != 1:
     if escolha == 2:
 
 
-    
-    
-
-print("Fim de jogo")
+    print("Fim de jogo")
 
 
 if __name__ == "__main__":
