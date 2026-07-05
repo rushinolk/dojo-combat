@@ -11,6 +11,9 @@ def is_endgame(player, npc):
     if player["vida"] <= 0 or npc["vida"] <= 0:
         return True
 
+def realizar_ataque(atacante, defensor):
+    receber_dano(atacante, defensor)
+    print(f"{atacante['nome']} atacou {defensor['nome']} causando {atacante['atk']} de dano!")
 
 
 if __name__ == "__main__":
@@ -49,6 +52,7 @@ if __name__ == "__main__":
         print(f"Vida: {player.get("vida")}")
 
         print("------------------------------")
+        
         print(f"{npc.get("nome")} NPC Boladão")
         print(f"Vida: {npc.get("vida")}")
 
