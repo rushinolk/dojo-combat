@@ -8,6 +8,9 @@ def rolar_dado():
 def receber_dano(atacante,defensor):
     defensor["vida"] -= atacante["atk"]
 
+def receber_dano_parcial(atacante,defensor,dano):
+    pass
+
 def realizar_ataque(atacante,defensor):
     print(f"{atacante.get('nome')} atacou {defensor.get('nome')}")
     time.sleep(0.6)
@@ -76,6 +79,7 @@ def is_endgame(player, npc):
 
 def bleeding(atacante,defensor):
     pass
+        
 
 
 def contra_ataque(atacante,defensor):
