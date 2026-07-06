@@ -78,6 +78,9 @@ def bleeding(atacante,defensor):
     pass
 
 
+def realizar_ataque(atacante, defensor):
+    receber_dano(atacante, defensor)
+    print(f"{atacante['nome']} atacou {defensor['nome']} causando {atacante['atk']} de dano!")
 
 
 if __name__ == "__main__":
