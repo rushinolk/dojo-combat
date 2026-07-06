@@ -11,6 +11,13 @@ def receber_dano(atacante,defensor):
 def receber_dano_parcial(atacante,defensor,dano):
     pass
 
+def bleeding(atacante,defensor):
+    pass
+        
+def contra_ataque(atacante,defensor):
+    pass
+
+
 def realizar_ataque(atacante,defensor):
     print(f"{atacante.get('nome')} atacou {defensor.get('nome')}")
     time.sleep(0.6)
@@ -74,16 +81,6 @@ def is_endgame(player, npc):
             return True
     return False    
 
-
-
-
-def bleeding(atacante,defensor):
-    pass
-        
-
-
-def contra_ataque(atacante,defensor):
-    pass
 
 
 def realizar_ataque(atacante, defensor):
