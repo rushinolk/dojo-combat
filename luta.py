@@ -5,32 +5,32 @@ import time
 def rolar_dado():
     return random.random()
 
-def receber_dano(atacante,defensor):
+def receber_dano_atk(atacante,defensor):
     defensor["vida"] -= atacante["atk"]
 
-def receber_dano_parcial(atacante,defensor,dano):
-    pass
+def receber_dano_parcial(defensor,dano):
+    defensor["vida"] -= dano
 
 def bleeding(atacante,defensor):
     pass
         
 def contra_ataque(atacante,defensor):
-    pass
+    if defensor["vida"] > 0:
+        print(f"{defensor.get('nome')} atacou {atacante.get('nome')}")
+        time.sleep(0.6)
+        receber_dano_atk(defensor,atacante)
+        print(f"{atacante.get('nome')} recebeu {defensor.get('atk')} de dano!")       
+        time.sleep(0.6)
 
 
 def realizar_ataque(atacante,defensor):
     print(f"{atacante.get('nome')} atacou {defensor.get('nome')}")
     time.sleep(0.6)
-    receber_dano(atacante,defensor)
+    receber_dano_atk(atacante,defensor)
     print(f"{defensor.get('nome')} recebeu {atacante.get('atk')} de dano!")
     time.sleep(0.6)
 
-    if defensor["vida"] > 0:
-        print(f"{defensor.get('nome')} atacou {atacante.get('nome')}")
-        time.sleep(0.6)
-        receber_dano(defensor,atacante)
-        print(f"{atacante.get('nome')} recebeu {defensor.get('atk')} de dano!")       
-        time.sleep(0.6)
+    contra_ataque(atacante,defensor)
 
 def defender(player,npc):
     chance = rolar_dado() 
@@ -42,7 +42,7 @@ def defender(player,npc):
     elif chance < 0.4:
         atk_original = npc["atk"]
         npc["atk"] = npc["atk"] / random.randint(2,4)
-        receber_dano(npc,player)
+        receber_dano_atk(npc,player)
         time.sleep(0.6)
         print("Defesa parcial! Você recebeu dano reduzido!")
         npc["atk"] = atk_original
@@ -51,7 +51,7 @@ def defender(player,npc):
     else:
         time.sleep(1)
         print("Defesa falhou!")
-        receber_dano(npc, player)
+        receber_dano_atk(npc, player)
 
 
 def use_special(player, npc):
@@ -59,7 +59,7 @@ def use_special(player, npc):
         print(f"{player.get('nome')} usou o ataque especial!")
         time.sleep(0.6)
         player["atk"] = player["atk"] * 2
-        receber_dano(player, npc)
+        receber_dano_atk(player, npc)
         print(f"{npc.get('nome')} recebeu {player.get('atk')} de dano!")
 
         # CAUSAR SANGRAMENTO
@@ -81,11 +81,6 @@ def is_endgame(player, npc):
             return True
     return False    
 
-
-
-def realizar_ataque(atacante, defensor):
-    receber_dano(atacante, defensor)
-    print(f"{atacante['nome']} atacou {defensor['nome']} causando {atacante['atk']} de dano!")
 
 
 if __name__ == "__main__":
