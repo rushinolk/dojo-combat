@@ -1,5 +1,17 @@
 import random
 import time
+import logging
+
+
+
+#logging configuration
+logging.basicConfig(
+    filename="luta.log", 
+    level=logging.DEBUG, 
+    filemode='a',
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
 
 
 def rolar_dado():
@@ -16,18 +28,18 @@ def bleeding(atacante,defensor):
         
 def contra_ataque(atacante,defensor):
     if defensor["vida"] > 0:
-        print(f"{defensor.get('nome')} atacou {atacante.get('nome')}")
+        logging.info(f"{defensor.get('nome')} atacou {atacante.get('nome')}")
         time.sleep(0.6)
         receber_dano_atk(defensor,atacante)
-        print(f"{atacante.get('nome')} recebeu {defensor.get('atk')} de dano!")       
+        logging.info(f"{atacante.get('nome')} recebeu {defensor.get('atk')} de dano!")       
         time.sleep(0.6)
 
 
 def realizar_ataque(atacante,defensor):
-    print(f"{atacante.get('nome')} atacou {defensor.get('nome')}")
+    logging.info(f"{atacante.get('nome')} atacou {defensor.get('nome')}")
     time.sleep(0.6)
     receber_dano_atk(atacante,defensor)
-    print(f"{defensor.get('nome')} recebeu {atacante.get('atk')} de dano!")
+    logging.info(f"{defensor.get('nome')} recebeu {atacante.get('atk')} de dano!")
     time.sleep(0.6)
 
     contra_ataque(atacante,defensor)
@@ -37,30 +49,30 @@ def defender(player,npc):
 
     if chance > 0.8:
         time.sleep(0.6)
-        print("Esquivou com sucesso!")
+        logging.info("Esquivou com sucesso!")
 
     elif chance < 0.4:
         atk_original = npc["atk"]
         npc["atk"] = npc["atk"] / random.randint(2,4)
         receber_dano_atk(npc,player)
         time.sleep(0.6)
-        print("Defesa parcial! Você recebeu dano reduzido!")
+        logging.info("Defesa parcial! Você recebeu dano reduzido!")
         npc["atk"] = atk_original
 
 
     else:
         time.sleep(1)
-        print("Defesa falhou!")
+        logging.info("Defesa falhou!")
         receber_dano_atk(npc, player)
 
 
 def use_special(player, npc):
     if player["cooldown_special"] == 0:
-        print(f"{player.get('nome')} usou o ataque especial!")
+        logging.info(f"{player.get('nome')} usou o ataque especial!")
         time.sleep(0.6)
         player["atk"] = player["atk"] * 2
         receber_dano_atk(player, npc)
-        print(f"{npc.get('nome')} recebeu {player.get('atk')} de dano!")
+        logging.info(f"{npc.get('nome')} recebeu {player.get('atk')} de dano!")
 
         # CAUSAR SANGRAMENTO
 
@@ -68,16 +80,15 @@ def use_special(player, npc):
         player["atk"] = player["atk"] / 2
         player["cooldown_special"] = 3
     else:
-        print(f"Ataque especial em cooldown! Aguarde {player['cooldown_special']}  turnos.")
-
+        logging.info(f"Ataque especial em cooldown! Aguarde {player['cooldown_special']}  turnos.")
 
 def is_endgame(player, npc):
     if player["vida"] <= 0 or npc["vida"] <= 0:       
         if player["vida"] <= 0:
-            print("Você perdeu!")
+            logging.info("Você perdeu!")
             return True
         else:
-            print("Você venceu!")
+            logging.info("Você venceu!")
             return True
     return False    
 
@@ -92,7 +103,9 @@ if __name__ == "__main__":
         "nome": "Leywin",
         "vida": 200,
         "atk": 25,
-        "cooldown_special": 0
+        "cooldown_special": 0,
+        "debuff_time": 0,
+        "buff_time": 0
     }
 
     nomes = ["killik","bowden","RUIM"]
@@ -109,7 +122,7 @@ if __name__ == "__main__":
             "3":use_special
     }
  
-    while end_game != True:
+    while not end_game:
 
         time.sleep(1.5)
         print(f"\n\nTurno: {turno}")
@@ -129,10 +142,10 @@ if __name__ == "__main__":
             escolha = input("\n\nEscolha uma opção: \n1 - Atacar \n2 - Defender\n3 - Ataque Especial\n\n")
 
         except ValueError:
-            print("Entrada inválida!")
+            logging.error("Entrada inválida!")
 
         if escolha == "0":
-            print("Encerrando programa...")
+            logging.info("Encerrando programa...")
             break
 
         if escolha in move_set:
@@ -145,4 +158,4 @@ if __name__ == "__main__":
         turno += 1
         
 
-    print("Fim de jogo")
+    logging.info("Fim de jogo")
