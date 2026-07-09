@@ -6,7 +6,7 @@ import logging
 console_handler = logging.StreamHandler()
 
 # 2. Configura para mandar para o arquivo
-file_handler = logging.FileHandler('luta.log', encoding='utf-8')
+file_handler = logging.FileHandler('log/luta.log', encoding='utf-8')
 
 #logging configuration
 logging.basicConfig(
