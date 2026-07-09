@@ -3,13 +3,16 @@ import time
 import logging
 
 
+console_handler = logging.StreamHandler()
+
+# 2. Configura para mandar para o arquivo
+file_handler = logging.FileHandler('luta.log', encoding='utf-8')
 
 #logging configuration
 logging.basicConfig(
-    filename="luta.log", 
     level=logging.DEBUG, 
-    filemode='a',
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[console_handler, file_handler]
 )
 
 
