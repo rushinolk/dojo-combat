@@ -26,9 +26,45 @@ def receber_dano_atk(atacante,defensor):
 def receber_dano_parcial(defensor,dano):
     defensor["vida"] -= dano
 
-def bleeding(atacante,defensor):
-    pass
-        
+def bleeding(atacante, defensor, turnos=3, dano_min=4, dano_max=10, chance=1.0):
+    if rolar_dado() >= chance:
+        return False
+
+    defensor["bleeding"] = {
+        "turnos": turnos,
+        "dano_min": dano_min,
+        "dano_max": dano_max,
+    }
+    print(f"{defensor.get('nome')} está sangrando por {turnos} turno(s)!")
+    time.sleep(0.6)
+    return True
+
+
+def processar_sangramento(combatente):
+    if combatente.get("bleeding") is None or combatente["vida"] <= 0:
+        return
+
+    sangramento = combatente["bleeding"]
+    dano = random.randint(sangramento["dano_min"], sangramento["dano_max"])
+    receber_dano_parcial(combatente, dano)
+
+    sangramento["turnos"] -= 1
+    turnos_restantes = sangramento["turnos"]
+
+    print(f"{combatente.get('nome')} sangrou e perdeu {dano} de vida!", end="")
+    if turnos_restantes > 0:
+        print(f" ({turnos_restantes} turno(s) restante(s))")
+    else:
+        print()
+        del combatente["bleeding"]
+        print(f"{combatente.get('nome')} parou de sangrar.")
+    time.sleep(0.6)
+
+
+def processar_sangramentos(*combatentes):
+    for combatente in combatentes:
+        processar_sangramento(combatente)
+
 def contra_ataque(atacante,defensor):
     if defensor["vida"] > 0:
         logging.info(f"{defensor.get('nome')} atacou {atacante.get('nome')}")
@@ -76,9 +112,8 @@ def use_special(player, npc):
         player["atk"] = player["atk"] * 2
         receber_dano_atk(player, npc)
         logging.info(f"{npc.get('nome')} recebeu {player.get('atk')} de dano!")
-
-        # CAUSAR SANGRAMENTO
-
+        if not bleeding(player, npc, chance=0.4):
+            logging.info(f"{npc.get('nome')} resistiu ao sangramento!")
         time.sleep(0.6)
         player["atk"] = player["atk"] / 2
         player["cooldown_special"] = 3
@@ -111,6 +146,13 @@ if __name__ == "__main__":
         "buff_time": 0
     }
 
+    jutsu = {
+        "nome": "jutsu",
+        "atk": 0,
+        "cooldown": 0,
+        "tipo": "ataque"
+    }
+
     nomes = ["killik","bowden","RUIM"]
 
     npc = {
@@ -126,6 +168,11 @@ if __name__ == "__main__":
     }
  
     while not end_game:
+
+        processar_sangramentos(player, npc)
+
+        if is_endgame(player, npc):
+            break
 
         time.sleep(1.5)
         print(f"\n\nTurno: {turno}")
