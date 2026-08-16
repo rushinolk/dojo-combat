@@ -131,6 +131,11 @@ def is_endgame(player, npc):
     return False    
 
 
+# Sistema de equipamentos que adicionam atributos ao char
+# Atributos base: energia, atk, defesa, agilidade, concentração, percepção
+# Atributos %: vida, perfuração, incremento de critico, incremento de absorção
+# Adicionar mecanica de drop de itens aleatorios
+
 
 if __name__ == "__main__":
 
